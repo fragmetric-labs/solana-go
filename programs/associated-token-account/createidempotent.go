@@ -10,8 +10,8 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-// Create is the `create` instruction.
-type Create struct {
+// CreateIdempotent is the `create_idempotent` instruction.
+type CreateIdempotent struct {
 
 	// [0] = [WRITE, SIGNER] payer
 	//
@@ -29,109 +29,109 @@ type Create struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewCreateInstructionBuilder creates a new `Create` instruction builder.
-func NewCreateInstructionBuilder() *Create {
-	nd := &Create{
+// NewCreateIdempotentInstructionBuilder creates a new `CreateIdempotent` instruction builder.
+func NewCreateIdempotentInstructionBuilder() *CreateIdempotent {
+	nd := &CreateIdempotent{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 7),
 	}
 	return nd
 }
 
 // SetPayerAccount sets the "payer" account.
-func (inst *Create) SetPayerAccount(payer ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetPayerAccount(payer ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(payer).WRITE().SIGNER()
 	return inst
 }
 
 // GetPayerAccount gets the "payer" account.
-func (inst *Create) GetPayerAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetPayerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetAssociatedTokenAccount sets the "associated_token_account" account.
-func (inst *Create) SetAssociatedTokenAccount(associatedTokenAccount ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetAssociatedTokenAccount(associatedTokenAccount ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(associatedTokenAccount).WRITE()
 	return inst
 }
 
 // GetAssociatedTokenAccount gets the "associated_token_account" account.
-func (inst *Create) GetAssociatedTokenAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetAssociatedTokenAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetWalletAccount sets the "wallet" account.
-func (inst *Create) SetWalletAccount(wallet ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetWalletAccount(wallet ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(wallet)
 	return inst
 }
 
 // GetWalletAccount gets the "wallet" account.
-func (inst *Create) GetWalletAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetWalletAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetMintAccount sets the "mint" account.
-func (inst *Create) SetMintAccount(mint ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetMintAccount(mint ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(mint)
 	return inst
 }
 
 // GetMintAccount gets the "mint" account.
-func (inst *Create) GetMintAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetSystemProgramAccount sets the "system_program" account.
-func (inst *Create) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "system_program" account.
-func (inst *Create) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *Create) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *Create) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetSysvarRentAccount sets the "sysvar_rent" account.
-func (inst *Create) SetSysvarRentAccount(sysvarRent ag_solanago.PublicKey) *Create {
+func (inst *CreateIdempotent) SetSysvarRentAccount(sysvarRent ag_solanago.PublicKey) *CreateIdempotent {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(sysvarRent)
 	return inst
 }
 
 // GetSysvarRentAccount gets the "sysvar_rent" account.
-func (inst *Create) GetSysvarRentAccount() *ag_solanago.AccountMeta {
+func (inst *CreateIdempotent) GetSysvarRentAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
-func (inst Create) Build() *Instruction {
+func (inst CreateIdempotent) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
-		TypeID: ag_binary.TypeIDFromUint8(Instruction_Create),
+		TypeID: ag_binary.TypeIDFromUint8(Instruction_CreateIdempotent),
 	}}
 }
 
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst Create) ValidateAndBuild() (*Instruction, error) {
+func (inst CreateIdempotent) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *Create) Validate() error {
+func (inst *CreateIdempotent) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
@@ -159,11 +159,11 @@ func (inst *Create) Validate() error {
 	return nil
 }
 
-func (inst *Create) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *CreateIdempotent) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
-			programBranch.Child(ag_format.Instruction("Create")).
+			programBranch.Child(ag_format.Instruction("CreateIdempotent")).
 				//
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
@@ -184,15 +184,15 @@ func (inst *Create) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj Create) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj CreateIdempotent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
-func (obj *Create) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *CreateIdempotent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
-// NewCreateInstruction declares a new Create instruction with the provided parameters and accounts.
-func NewCreateInstruction(
+// NewCreateIdempotentInstruction declares a new CreateIdempotent instruction with the provided parameters and accounts.
+func NewCreateIdempotentInstruction(
 	// Accounts:
 	payer ag_solanago.PublicKey,
 	associatedTokenAccount ag_solanago.PublicKey,
@@ -200,8 +200,8 @@ func NewCreateInstruction(
 	mint ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey,
 	tokenProgram ag_solanago.PublicKey,
-	sysvarRent ag_solanago.PublicKey) *Create {
-	return NewCreateInstructionBuilder().
+	sysvarRent ag_solanago.PublicKey) *CreateIdempotent {
+	return NewCreateIdempotentInstructionBuilder().
 		SetPayerAccount(payer).
 		SetAssociatedTokenAccount(associatedTokenAccount).
 		SetWalletAccount(wallet).
@@ -211,19 +211,19 @@ func NewCreateInstruction(
 		SetSysvarRentAccount(sysvarRent)
 }
 
-// NewCreateInstruction declares a new Create instruction with the provided parameters and accounts.
-func NewCreateInstructionWithDerivation(
+
+func NewCreateIdempotentInstructionWithDerivation(
 // Accounts:
 	payer ag_solanago.PublicKey,
 	wallet ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey) *Create {
+	tokenProgram ag_solanago.PublicKey) *CreateIdempotent {
 	associatedTokenAccount, _, _ := ag_solanago.FindAssociatedTokenAddress(
 		wallet,
 		mint,
 		tokenProgram,
 	)
-	return NewCreateInstructionBuilder().
+	return NewCreateIdempotentInstructionBuilder().
 		SetPayerAccount(payer).
 		SetAssociatedTokenAccount(associatedTokenAccount).
 		SetWalletAccount(wallet).
