@@ -139,6 +139,10 @@ func (c *Client) Close() {
 	c.conn.Close()
 }
 
+func (c *Client) Conn() *websocket.Conn {
+	return c.conn
+}
+
 func (c *Client) receiveMessages() {
 	for {
 		select {
