@@ -24,15 +24,13 @@ type CreateIdempotent struct {
 	// [4] = [] system_program
 	//
 	// [5] = [] token_program
-	//
-	// [6] = [] sysvar_rent
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
 // NewCreateIdempotentInstructionBuilder creates a new `CreateIdempotent` instruction builder.
 func NewCreateIdempotentInstructionBuilder() *CreateIdempotent {
 	nd := &CreateIdempotent{
-		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 7),
+		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 6),
 	}
 	return nd
 }
@@ -103,17 +101,6 @@ func (inst *CreateIdempotent) GetTokenProgramAccount() *ag_solanago.AccountMeta 
 	return inst.AccountMetaSlice.Get(5)
 }
 
-// SetSysvarRentAccount sets the "sysvar_rent" account.
-func (inst *CreateIdempotent) SetSysvarRentAccount(sysvarRent ag_solanago.PublicKey) *CreateIdempotent {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(sysvarRent)
-	return inst
-}
-
-// GetSysvarRentAccount gets the "sysvar_rent" account.
-func (inst *CreateIdempotent) GetSysvarRentAccount() *ag_solanago.AccountMeta {
-	return inst.AccountMetaSlice.Get(6)
-}
-
 func (inst CreateIdempotent) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
@@ -152,9 +139,6 @@ func (inst *CreateIdempotent) Validate() error {
 		if inst.AccountMetaSlice[5] == nil {
 			return errors.New("accounts.TokenProgram is not set")
 		}
-		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.SysvarRent is not set")
-		}
 	}
 	return nil
 }
@@ -171,14 +155,13 @@ func (inst *CreateIdempotent) EncodeToTree(parent ag_treeout.Branches) {
 					instructionBranch.Child("Params[len=0]").ParentFunc(func(paramsBranch ag_treeout.Branches) {})
 
 					// Accounts of the instruction:
-					instructionBranch.Child("Accounts[len=7]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
+					instructionBranch.Child("Accounts[len=6]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("            payer", inst.AccountMetaSlice.Get(0)))
 						accountsBranch.Child(ag_format.Meta("associated_token_", inst.AccountMetaSlice.Get(1)))
 						accountsBranch.Child(ag_format.Meta("           wallet", inst.AccountMetaSlice.Get(2)))
 						accountsBranch.Child(ag_format.Meta("             mint", inst.AccountMetaSlice.Get(3)))
 						accountsBranch.Child(ag_format.Meta("   system_program", inst.AccountMetaSlice.Get(4)))
 						accountsBranch.Child(ag_format.Meta("    token_program", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("      sysvar_rent", inst.AccountMetaSlice.Get(6)))
 					})
 				})
 		})
@@ -199,16 +182,14 @@ func NewCreateIdempotentInstruction(
 	wallet ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey,
-	sysvarRent ag_solanago.PublicKey) *CreateIdempotent {
+	tokenProgram ag_solanago.PublicKey) *CreateIdempotent {
 	return NewCreateIdempotentInstructionBuilder().
 		SetPayerAccount(payer).
 		SetAssociatedTokenAccount(associatedTokenAccount).
 		SetWalletAccount(wallet).
 		SetMintAccount(mint).
 		SetSystemProgramAccount(systemProgram).
-		SetTokenProgramAccount(tokenProgram).
-		SetSysvarRentAccount(sysvarRent)
+		SetTokenProgramAccount(tokenProgram)
 }
 
 
@@ -229,6 +210,5 @@ func NewCreateIdempotentInstructionWithDerivation(
 		SetWalletAccount(wallet).
 		SetMintAccount(mint).
 		SetSystemProgramAccount(ag_solanago.SystemProgramID).
-		SetTokenProgramAccount(tokenProgram).
-		SetSysvarRentAccount(ag_solanago.SysVarRentPubkey)
+		SetTokenProgramAccount(tokenProgram)
 }
