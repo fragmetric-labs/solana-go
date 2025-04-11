@@ -229,6 +229,5 @@ func NewCreateIdempotentInstructionWithDerivation(
 		SetWalletAccount(wallet).
 		SetMintAccount(mint).
 		SetSystemProgramAccount(ag_solanago.SystemProgramID).
-		SetTokenProgramAccount(tokenProgram).
-		SetSysvarRentAccount(ag_solanago.SysVarRentPubkey)
+		SetTokenProgramAccount(tokenProgram)
 }
