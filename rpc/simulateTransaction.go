@@ -43,6 +43,8 @@ type SimulateTransactionResult struct {
 
 	// The number of compute budget units consumed during the processing of this transaction.
 	UnitsConsumed *uint64 `json:"unitsConsumed,omitempty"`
+
+	InnerInstructions []ParsedInnerInstruction `json:"innerInstructions"`
 }
 
 // SimulateTransaction simulates sending a transaction.
@@ -71,6 +73,8 @@ type SimulateTransactionOpts struct {
 	ReplaceRecentBlockhash bool
 
 	Accounts *SimulateTransactionAccountsOpts
+
+	InnerInstructions bool
 }
 
 type SimulateTransactionAccountsOpts struct {
@@ -123,6 +127,9 @@ func (cl *Client) SimulateRawTransactionWithOpts(
 				"encoding":  opts.Accounts.Encoding,
 				"addresses": opts.Accounts.Addresses,
 			}
+		}
+		if opts.InnerInstructions == true {
+			obj["innerInstructions"] = true
 		}
 	}
 
