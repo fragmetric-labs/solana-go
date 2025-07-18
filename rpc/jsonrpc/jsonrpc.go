@@ -383,11 +383,8 @@ func (client *rpcClient) CallForInto(
 ) error {
 	request := &RPCRequest{
 		Method:  method,
+		Params:  Params(params...),
 		JSONRPC: jsonrpcVersion,
-	}
-
-	if params != nil {
-		request.Params = params
 	}
 
 	rpcResponse, err := client.doCall(ctx, request)
@@ -410,11 +407,8 @@ func (client *rpcClient) CallWithCallback(
 ) error {
 	request := &RPCRequest{
 		Method:  method,
+		Params:  Params(params...),
 		JSONRPC: jsonrpcVersion,
-	}
-
-	if params != nil {
-		request.Params = params
 	}
 
 	return client.doCallWithCallbackOnHTTPResponse(
