@@ -40,6 +40,7 @@ type Client struct {
 }
 
 type JSONRPCClient interface {
+	CallFor(ctx context.Context, out interface{}, method string, params ...interface{}) error
 	CallForInto(ctx context.Context, out interface{}, method string, params []interface{}) error
 	CallWithCallback(ctx context.Context, method string, params []interface{}, callback func(*http.Request, *http.Response) error) error
 	CallBatch(ctx context.Context, requests jsonrpc.RPCRequests) (jsonrpc.RPCResponses, error)
@@ -119,6 +120,10 @@ func newHTTP() *http.Client {
 		Timeout:   defaultTimeout,
 		Transport: gzhttp.Transport(tr),
 	}
+}
+
+func (cl *Client) RPCCallFor(ctx context.Context, out interface{}, method string, params ...interface{}) error {
+	return cl.rpcClient.CallFor(ctx, out, method, params)
 }
 
 // RPCCallForInto allows to access the raw RPC client and send custom requests.
