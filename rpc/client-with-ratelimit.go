@@ -33,9 +33,9 @@ func NewWithRateLimit(
 	}
 }
 
-func (wr *clientWithRateLimiting) Call(ctx context.Context, method string, params ...interface{}) (*jsonrpc.RPCResponse, error) {
+func (wr *clientWithRateLimiting) CallFor(ctx context.Context, out interface{}, method string, params ...interface{}) error {
 	wr.rateLimiter.Take()
-	return wr.rpcClient.Call(ctx, method, params)
+	return wr.rpcClient.CallFor(ctx, out, method, params...)
 }
 
 func (wr *clientWithRateLimiting) CallForInto(ctx context.Context, out interface{}, method string, params []interface{}) error {

@@ -36,12 +36,12 @@ func NewWithLimiter(
 	}
 }
 
-func (wr *clientWithLimiter) Call(ctx context.Context, method string, params ...interface{}) (*jsonrpc.RPCResponse, error) {
+func (wr *clientWithLimiter) CallFor(ctx context.Context, out interface{}, method string, params ...interface{}) error {
 	err := wr.limiter.Wait(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return wr.rpcClient.Call(ctx, method, params)
+	return wr.rpcClient.CallFor(ctx, out, method, params...)
 }
 
 func (wr *clientWithLimiter) CallForInto(ctx context.Context, out interface{}, method string, params []interface{}) error {
